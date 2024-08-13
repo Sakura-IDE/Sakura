@@ -20,19 +20,16 @@
 
 ###
 
-<h2 align="left">How to install</h2>
+<h2 align="left">How to setup Sakura</h2>
 
 ###
 
 ```bash
-# For windows
-$ npm run build:win
+Step 1: npm install
 
-# For macOS
-$ npm run build:mac
-
-# For Linux
-$ npm run build:linux
+Step 2: npm run dev
 ```
 
 ###
+
+<p align="left">Happy coding!</p>

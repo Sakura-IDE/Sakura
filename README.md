@@ -6,7 +6,7 @@
 
 ###
 
-<p align="left">An minimal IDE for beginners and experienced!</p>
+<p align="left">An minimal IDE for beginners and experienced! It is still work in progress, so please do not expect a full working IDE at the moment.</p>
 
 ###
 

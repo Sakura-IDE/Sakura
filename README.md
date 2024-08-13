@@ -1,26 +1,28 @@
-# sakura
+<img align="left" height="200" src="https://raw.githubusercontent.com/Sakura-IDE/Sakura/main/src/renderer/src/assets/logo.png"  />
 
-An Electron application with Vue
+###
 
-## Recommended IDE Setup
+<h1 align="left">Sakura</h1>
 
-- [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+###
 
-## Project Setup
+<p align="left">An minimal IDE for beginners and experienced!</p>
 
-### Install
+###
 
-```bash
-$ npm install
-```
+<br clear="both">
 
-### Development
+<h2 align="left">About Sakura</h2>
 
-```bash
-$ npm run dev
-```
+###
 
-### Build
+<p align="left">Sakura is an IDE for beginners and experienced, which means it is open to everyone, and open-source, which means anyone can modify it and distribute.</p>
+
+###
+
+<h2 align="left">How to install</h2>
+
+###
 
 ```bash
 # For windows
@@ -32,3 +34,5 @@ $ npm run build:mac
 # For Linux
 $ npm run build:linux
 ```
+
+###

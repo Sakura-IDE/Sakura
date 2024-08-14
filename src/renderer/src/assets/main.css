@@ -89,6 +89,7 @@ body {
 }
 
 .options label {
+  user-select: none;
   color: rgb(255, 255, 255);
   transition: ease, 0.3s;
 }
@@ -98,10 +99,12 @@ body {
 }
 
 .options p {
+  user-select: none;
   color: rgb(255, 255, 255);
 }
 
 .whatsnew {
+  user-select: none;
   border-radius: 5px;
   margin-left: auto;
   margin-right: 20px;

@@ -83,9 +83,45 @@ body {
 }
 
 .options {
-  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  margin-left: 60px;
 }
 
-.options a {
+.options label {
+  color: rgb(255, 255, 255);
+  transition: ease, 0.3s;
+}
+
+.options label:hover {
   color: rgb(96, 96, 255);
+}
+
+.options p {
+  color: rgb(255, 255, 255);
+}
+
+.whatsnew {
+  border-radius: 5px;
+  margin-left: auto;
+  margin-right: 20px;
+  margin-bottom: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Aligns content to the top */
+  background-color: rgb(28, 28, 28);
+  width: 300px;
+  height: 600px;
+  color: white;
+  text-align: center;
+}
+
+.learnmore {
+  margin-top: auto; /* Pushes the element to the bottom */
+  color: rgb(105, 105, 105);
+  transition: ease, 0.3s;
+}
+
+.learnmore:hover {
+  color: white;
 }

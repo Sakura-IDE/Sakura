@@ -29,6 +29,7 @@
   user-select: none;
   color: #888;
   overflow: hidden; /* Prevent scrolling */
+  line-height: 22px;
 }
 
 #editor {
@@ -42,7 +43,7 @@
   background-color: #1e1e1e;
   color: #f8f8f2;
   caret-color: #f8f8f2;
-  line-height: 1.5;
+  line-height: 22px;
   white-space: pre;
   tab-size: 4;
 }

@@ -68,6 +68,14 @@ app.on('window-all-closed', () => {
   }
 })
 
+ipcMain.on('close', () => {
+  app.quit()
+})
+
+ipcMain.on('minimize', () => {
+  mainWindow.minimize()
+})
+
 const clientId = '1272892428365594685'
 
 DiscordRPC.register(clientId)

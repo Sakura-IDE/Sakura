@@ -5,7 +5,7 @@ body {
   padding: 0;
   display: flex;
   height: 100vh;
-  overflow: hidden;
+  overflow-y: scroll;
   margin-top: 50px;
   flex-direction: column;
 }

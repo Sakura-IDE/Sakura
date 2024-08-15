@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,8 +7,8 @@
   default-src 'self'; 
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src 'self' https://fonts.gstatic.com;
-  script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://www.gstatic.com https://www.googleapis.com https://firebase.googleapis.com https://www.googletagmanager.com https://www.google-analytics.com https://firebase.googleapis.com;
-  connect-src 'self' ws: https://*.firebaseio.com https://www.googleapis.com https://firebaseinstallations.googleapis.com wss://*.firebaseio.com https://www.google-analytics.com https://firebase.googleapis.com ws://127.0.0.1:3001;
+  script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://www.gstatic.com https://www.googleapis.com https://firebase.googleapis.com https://www.googletagmanager.com https://www.google-analytics.com https://apis.google.com https://identitytoolkit.googleapis.com https://sakura-ide.firebaseapp.com/;
+  connect-src 'self' ws: https://*.firebaseio.com https://www.googleapis.com https://firebaseinstallations.googleapis.com wss://*.firebaseio.com https://www.google-analytics.com https://firebase.googleapis.com ws://127.0.0.1:3001 https://identitytoolkit.googleapis.com https://sakura-ide.firebaseapp.com/;
   img-src 'self' data: https:;
 ">
   <title>Options</title>
@@ -192,33 +191,51 @@
     document.addEventListener('DOMContentLoaded', () => {
       showContent('general');
     });
+
+    function authenticate() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const errorMessageElement = document.getElementById("error-message");
+
+      errorMessageElement.textContent = "";
+
+      // Firebase authentication logic here
+    }
+
+    function signInWithGitHub() {
+      // Firebase GitHub sign-in logic here
+    }
+
+    function showErrorMessage(message) {
+      const errorMessageElement = document.getElementById("error-message");
+      errorMessageElement.textContent = message;
+      errorMessageElement.classList.add("show");
+      setTimeout(() => {
+        errorMessageElement.classList.remove("show");
+      }, 3000);
+    }
   </script>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-analytics.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GithubAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyCzSQaaV_OafbmCN54QyB5aD8gEwmRrjiU",
-    authDomain: "sakura-ide.firebaseapp.com",
-    projectId: "sakura-ide",
-    storageBucket: "sakura-ide.appspot.com",
-    messagingSenderId: "435191737841",
-    appId: "1:435191737841:web:a0fae93c8f8a70ae96a850",
-    measurementId: "G-XLMCGXPWK0"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyCzSQaaV_OafbmCN54QyB5aD8gEwmRrjiU",
+      authDomain: "sakura-ide.firebaseapp.com",
+      projectId: "sakura-ide",
+      storageBucket: "sakura-ide.appspot.com",
+      messagingSenderId: "435191737841",
+      appId: "1:435191737841:web:a0fae93c8f8a70ae96a850",
+      measurementId: "G-XLMCGXPWK0"
+    };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-  
-    let currentUser = null;
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth(app);
 
-    function authenticate() {
+    window.authenticate = function() {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
       const errorMessageElement = document.getElementById("error-message");
@@ -246,7 +263,7 @@
         });
     }
 
-    function signInWithGitHub() {
+    window.signInWithGitHub = function() {
       const provider = new GithubAuthProvider();
       signInWithPopup(auth, provider)
         .then((result) => {
@@ -257,88 +274,6 @@
           showErrorMessage(error.message);
         });
     }
-
-    function showErrorMessage(message) {
-      const errorMessageElement = document.getElementById("error-message");
-      errorMessageElement.textContent = message;
-      errorMessageElement.classList.add("show");
-      setTimeout(() => {
-        errorMessageElement.classList.remove("show");
-      }, 3000);
-    }
-    
-    function showContent(id) {
-      const contents = document.querySelectorAll('.content');
-      contents.forEach(content => content.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      showContent('general');
-    });
-
-    function authenticate() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const errorMessageElement = document.getElementById("error-message");
-
-      errorMessageElement.textContent = "";
-
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          currentUser = userCredential.user;
-          window.location.href = "index.html";
-        })
-        .catch((signUpError) => {
-          if (signUpError.code === "auth/email-already-in-use") {
-            signInWithEmailAndPassword(auth, email, password)
-              .then((userCredential) => {
-                currentUser = userCredential.user;
-                window.location.href = "index.html";
-              })
-              .catch((signInError) => {
-                showErrorMessage(signInError.message);
-              });
-          } else {
-            showErrorMessage(signUpError.message);
-          }
-        });
-    }
-
-    function signInWithGitHub() {
-      const provider = new GithubAuthProvider();
-      signInWithPopup(auth, provider)
-        .then((result) => {
-          currentUser = result.user;
-          window.location.href = "index.html";
-        })
-        .catch((error) => {
-          showErrorMessage(error.message);
-        });
-    }
-
-    function showErrorMessage(message) {
-      const errorMessageElement = document.getElementById("error-message");
-      errorMessageElement.textContent = message;
-      errorMessageElement.classList.add("show");
-      setTimeout(() => {
-        errorMessageElement.classList.remove("show");
-      }, 3000);
-    }
-    
-    onAuthStateChanged(auth, (user) => {
-      const signinButton = document.getElementById("signin-button");
-      if (signinButton) {
-        if (user) {
-          currentUser = user;
-          signinButton.textContent = user.displayName || "User Settings";
-        } else {
-          currentUser = null;
-          signinButton.textContent = "Sign in/Sign Up";
-        }
-      }
-    });
   </script>
 </body>
-
 </html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="
+  default-src 'self'; 
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src 'self' https://fonts.gstatic.com;
+  script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://www.gstatic.com https://www.googleapis.com https://firebase.googleapis.com https://www.googletagmanager.com https://www.google-analytics.com https://firebase.googleapis.com;
+  connect-src 'self' ws: https://*.firebaseio.com https://www.googleapis.com https://firebaseinstallations.googleapis.com wss://*.firebaseio.com https://www.google-analytics.com https://firebase.googleapis.com ws://127.0.0.1:3001;
+  img-src 'self' data: https:;
+">
+  <title>Options</title>
+  <link rel="stylesheet" href="src/assets/main.css">
+  <link rel="stylesheet" href="src/assets/editor.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <script src="node_modules/@xterm/xterm/lib/xterm.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: row !important;
+      height: 100vh;
+      background-color: #222222;
+    }
+
+    .sidebar {
+      width: 200px;
+      background-color: #333;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      height: 100vh;
+      box-sizing: border-box;
+    }
+
+    .sidebar button {
+      font-family: Share Tech Mono, sans-serif;
+      background: none;
+      border: none;
+      color: white;
+      padding: 15px;
+      text-align: left;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+      transition: ease, 0.3s;
+    }
+
+    .sidebar button:hover {
+      background-color: #555;
+    }
+
+    .content-container {
+      color: white;
+      flex-grow: 1;
+      padding: 20px;
+      background: #222222;
+      box-sizing: border-box;
+      overflow-y: auto;
+    }
+
+    .content {
+      display: none;
+    }
+
+    .content.active {
+      display: block;
+    }
+
+    .form-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    input[type="email"],
+    input[type="password"],
+    .form-container button {
+      width: 300px;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+      background-color: #333;
+      color: #fff;
+    }
+
+    .form-container button {
+      background-color: #ffffff;
+      color: #000;
+      cursor: pointer;
+    }
+
+    .form-container button:hover {
+      background-color: #e0e0e0;
+    }
+
+    .signinmethod {
+      margin-left: 20px;
+    }
+
+    .signinmethod button {
+      border: 1px solid white;
+      border-radius: 5px;
+      padding: 5px 10px;
+      background-color: transparent;
+      color: #ffffff;
+      cursor: pointer;
+      font-family: Poppins, sans-serif;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+    }
+
+    .signinmethod button:hover {
+      background-color: #000000;
+    }
+
+    button {
+      border: 1px solid white;
+      border-radius: 5px;
+      padding: 5px 10px;
+      background-color: transparent;
+      color: #ffffff;
+      cursor: pointer;
+      font-family: Poppins, sans-serif;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+    }
+
+    .signin {
+      background-color: #1f1f1f;
+      display: inline-block;
+      padding: 20px;
+      position: fixed;
+      bottom: 20px;
+      left: 10px;
+      z-index: 10000;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sidebar">
+    <button onclick="showContent('general')">General</button>
+    <button onclick="showContent('account')">Account</button>
+    <button onclick="showContent('privacy')">Privacy</button>
+  </div>
+
+  <div class="content-container">
+    <div id="general" class="content">
+      <h2>General Settings</h2>
+      <p>Manage your general preferences here.</p>
+    </div>
+    <div id="account" class="content">
+      <h2>Account Settings</h2>
+      <p>Update your account information.</p>
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <div id="error-message" style="color: red"></div>
+      <div class="signinmethod">
+        <button onclick="authenticate()">
+          Sign In / Sign Up
+        </button>
+        <button onclick="signInWithGitHub()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8" />
+          </svg>
+          Sign in with GitHub
+        </button>
+      </div>
+    </div>
+    <div id="privacy" class="content">
+      <h2>Privacy Settings</h2>
+      <p>Adjust your privacy settings.</p>
+    </div>
+  </div>
+
+  <script>
+    function showContent(id) {
+      const contents = document.querySelectorAll('.content');
+      contents.forEach(content => content.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      showContent('general');
+    });
+  </script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyCzSQaaV_OafbmCN54QyB5aD8gEwmRrjiU",
+    authDomain: "sakura-ide.firebaseapp.com",
+    projectId: "sakura-ide",
+    storageBucket: "sakura-ide.appspot.com",
+    messagingSenderId: "435191737841",
+    appId: "1:435191737841:web:a0fae93c8f8a70ae96a850",
+    measurementId: "G-XLMCGXPWK0"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  
+    let currentUser = null;
+
+    function authenticate() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const errorMessageElement = document.getElementById("error-message");
+
+      errorMessageElement.textContent = "";
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          currentUser = userCredential.user;
+          window.location.href = "index.html";
+        })
+        .catch((signUpError) => {
+          if (signUpError.code === "auth/email-already-in-use") {
+            signInWithEmailAndPassword(auth, email, password)
+              .then((userCredential) => {
+                currentUser = userCredential.user;
+                window.location.href = "index.html";
+              })
+              .catch((signInError) => {
+                showErrorMessage(signInError.message);
+              });
+          } else {
+            showErrorMessage(signUpError.message);
+          }
+        });
+    }
+
+    function signInWithGitHub() {
+      const provider = new GithubAuthProvider();
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          currentUser = result.user;
+          window.location.href = "index.html";
+        })
+        .catch((error) => {
+          showErrorMessage(error.message);
+        });
+    }
+
+    function showErrorMessage(message) {
+      const errorMessageElement = document.getElementById("error-message");
+      errorMessageElement.textContent = message;
+      errorMessageElement.classList.add("show");
+      setTimeout(() => {
+        errorMessageElement.classList.remove("show");
+      }, 3000);
+    }
+    
+    function showContent(id) {
+      const contents = document.querySelectorAll('.content');
+      contents.forEach(content => content.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      showContent('general');
+    });
+
+    function authenticate() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const errorMessageElement = document.getElementById("error-message");
+
+      errorMessageElement.textContent = "";
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          currentUser = userCredential.user;
+          window.location.href = "index.html";
+        })
+        .catch((signUpError) => {
+          if (signUpError.code === "auth/email-already-in-use") {
+            signInWithEmailAndPassword(auth, email, password)
+              .then((userCredential) => {
+                currentUser = userCredential.user;
+                window.location.href = "index.html";
+              })
+              .catch((signInError) => {
+                showErrorMessage(signInError.message);
+              });
+          } else {
+            showErrorMessage(signUpError.message);
+          }
+        });
+    }
+
+    function signInWithGitHub() {
+      const provider = new GithubAuthProvider();
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          currentUser = result.user;
+          window.location.href = "index.html";
+        })
+        .catch((error) => {
+          showErrorMessage(error.message);
+        });
+    }
+
+    function showErrorMessage(message) {
+      const errorMessageElement = document.getElementById("error-message");
+      errorMessageElement.textContent = message;
+      errorMessageElement.classList.add("show");
+      setTimeout(() => {
+        errorMessageElement.classList.remove("show");
+      }, 3000);
+    }
+    
+    onAuthStateChanged(auth, (user) => {
+      const signinButton = document.getElementById("signin-button");
+      if (signinButton) {
+        if (user) {
+          currentUser = user;
+          signinButton.textContent = user.displayName || "User Settings";
+        } else {
+          currentUser = null;
+          signinButton.textContent = "Sign in/Sign Up";
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

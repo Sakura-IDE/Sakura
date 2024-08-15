@@ -3,10 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; 
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com;
-    font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;
-    script-src 'self' 'unsafe-inline';">
+  <meta http-equiv="Content-Security-Policy" content="
+  default-src 'self'; 
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src 'self' https://fonts.gstatic.com;
+  script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://www.gstatic.com https://www.googleapis.com https://firebase.googleapis.com https://www.googletagmanager.com https://www.google-analytics.com https://firebase.googleapis.com;
+  connect-src 'self' ws: https://*.firebaseio.com https://www.googleapis.com https://firebaseinstallations.googleapis.com wss://*.firebaseio.com https://www.google-analytics.com https://firebase.googleapis.com ws://127.0.0.1:3001;
+  img-src 'self' data: https:;
+">
   <link rel="stylesheet" href="src/assets/main.css">
   <link rel="stylesheet" href="src/assets/editor.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">

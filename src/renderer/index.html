@@ -3,10 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; 
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com;
-    font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;
-    script-src 'self' 'unsafe-inline';">
+  <meta http-equiv="Content-Security-Policy" content="
+  default-src 'self'; 
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src 'self' https://fonts.gstatic.com;
+  script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://www.gstatic.com https://www.googleapis.com https://firebase.googleapis.com https://www.googletagmanager.com https://www.google-analytics.com https://firebase.googleapis.com;
+  connect-src 'self' ws: https://*.firebaseio.com https://www.googleapis.com https://firebaseinstallations.googleapis.com wss://*.firebaseio.com https://www.google-analytics.com https://firebase.googleapis.com ws://127.0.0.1:3001;
+  img-src 'self' data: https:;
+">
   <link rel="stylesheet" href="src/assets/main.css">
   <link rel="stylesheet" href="src/assets/editor.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,7 +24,7 @@
     <a href="#">File</a>
     <a href="#">Edit</a>
     <a href="#">View</a>
-    <a href="#">Options</a>
+    <a id="options" href="#">Options</a>
     <a href="#">Terminal</a>
     <a href="#">Help</a>
     <div class="version">Sakura IDE v1.0</div>
@@ -28,7 +32,7 @@
       <a href="#" id="minimize"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-lg" viewBox="0 0 16 16">
         <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8"/>
       </svg></a>
-      <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-app" viewBox="0 0 16 16">
+      <a href="#" id="maximize"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-app" viewBox="0 0 16 16">
         <path d="M11 2a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3zM5 1a4 4 0 0 0-4 4v6a4 4 0 0 0 4 4h6a4 4 0 0 0 4-4V5a4 4 0 0 0-4-4z"/>
       </svg></a>
       <a href="#" id="close"><svg class="close" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
